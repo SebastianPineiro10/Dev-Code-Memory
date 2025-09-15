@@ -8,6 +8,11 @@ Save, organize, and insert code snippets in multiple languages 🚀
 
 ![Demo](media/dev-code-memory.gif)
 
+## Author
+
+**Sebastian Piñeiro Madero**  
+[Portfolio](https://sebastian-codes.vercel.app/) • [GitHub](https://github.com/SebastianPineiro10)
+
 ## Overview / Descripción
 
 EN
@@ -50,7 +55,7 @@ ES
 	•	Atajos de Teclado:
 	•	Agregar fragmento → Ctrl+Alt+D (Win/Linux) / Cmd+Alt+D (macOS).
 	•	Insertar fragmento → Ctrl+Alt+P (Win/Linux) / Cmd+Alt+P (macOS).
-	
+
 
 ## Example Snippet / Ejemplo de Fragmento
 
