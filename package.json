@@ -31,6 +31,16 @@
     "navigation"
   ],
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:dev-code-memory.addSnippet",
+    "onCommand:dev-code-memory.insertSnippet",
+    "onCommand:dev-code-memory.highlightMatches",
+    "onCommand:dev-code-memory.replaceMatches",
+    "onCommand:dev-code-memory.exportSnippets",
+    "onCommand:dev-code-memory.importSnippets",
+    "onCommand:dev-code-memory.selectBlock",
+    "onCommand:dev-code-memory.gotoMatching"
+  ],
   "contributes": {
     "commands": [
       { "command": "dev-code-memory.addSnippet", "title": "Dev Code Memory: Agregar fragmento" },
