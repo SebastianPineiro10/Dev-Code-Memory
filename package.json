@@ -1,0 +1,95 @@
+{
+  "name": "dev-code-memory",
+  "displayName": "Dev Code Memory",
+  "description": "EN: Save, organize, and insert code snippets across multiple languages, with advanced search, replace, and block/tag navigation. | ES: Guarda, organiza e inserta fragmentos de código en múltiples lenguajes, con búsqueda avanzada, reemplazo y navegación de bloques/etiquetas.",
+  "version": "0.0.4",
+  "publisher": "SerenoDevs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SebastianPineiro10/Dev-Code-Memory.git"
+  },
+  "icon": "media/icon.png",
+  "author": {
+    "name": "Sebastian Piñeiro Madero",
+    "email": "sebastian.bienesraices10@gmail.com",
+    "url": "https://github.com/SebastianPineiro10"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": ["Snippets", "Other"],
+  "keywords": [
+    "snippets",
+    "memory",
+    "code",
+    "multi-language",
+    "refactor",
+    "god-mode",
+    "replace",
+    "highlight",
+    "navigation"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "dev-code-memory.addSnippet", "title": "Dev Code Memory: Agregar fragmento" },
+      { "command": "dev-code-memory.insertSnippet", "title": "Dev Code Memory: Insertar fragmento" },
+      { "command": "dev-code-memory.highlightMatches", "title": "Dev Code Memory: Resaltar coincidencias" },
+      { "command": "dev-code-memory.replaceMatches", "title": "Dev Code Memory: Reemplazar coincidencias" },
+      { "command": "dev-code-memory.exportSnippets", "title": "Dev Code Memory: Exportar fragmentos" },
+      { "command": "dev-code-memory.importSnippets", "title": "Dev Code Memory: Importar fragmentos" },
+      { "command": "dev-code-memory.selectBlock", "title": "Dev Code Memory: Seleccionar bloque" },
+      { "command": "dev-code-memory.gotoMatching", "title": "Dev Code Memory: Ir a pareja" }
+    ],
+    "keybindings": [
+      { "command": "dev-code-memory.addSnippet", "key": "ctrl+alt+d", "mac": "cmd+alt+d", "when": "editorTextFocus" },
+      { "command": "dev-code-memory.insertSnippet", "key": "ctrl+alt+p", "mac": "cmd+alt+p", "when": "editorTextFocus" },
+      { "command": "dev-code-memory.highlightMatches", "key": "ctrl+alt+h", "mac": "cmd+alt+h", "when": "editorHasSelection" },
+      { "command": "dev-code-memory.replaceMatches", "key": "ctrl+alt+r", "mac": "cmd+alt+r", "when": "editorHasSelection" },
+      { "command": "dev-code-memory.selectBlock", "key": "ctrl+alt+b", "mac": "cmd+alt+b", "when": "editorTextFocus" },
+      { "command": "dev-code-memory.gotoMatching", "key": "ctrl+alt+m", "mac": "cmd+alt+m", "when": "editorTextFocus" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "dev-code-memory.addSnippet", "group": "dev-code-memory@1", "when": "editorHasSelection" },
+        { "command": "dev-code-memory.insertSnippet", "group": "dev-code-memory@2", "when": "editorTextFocus" },
+        { "command": "dev-code-memory.highlightMatches", "group": "dev-code-memory@3", "when": "editorHasSelection" },
+        { "command": "dev-code-memory.replaceMatches", "group": "dev-code-memory@4", "when": "editorHasSelection" },
+        { "command": "dev-code-memory.selectBlock", "group": "dev-code-memory@5", "when": "editorTextFocus" },
+        { "command": "dev-code-memory.gotoMatching", "group": "dev-code-memory@6", "when": "editorTextFocus" }
+      ],
+      "commandPalette": [
+        { "command": "dev-code-memory.exportSnippets", "when": "true" },
+        { "command": "dev-code-memory.importSnippets", "when": "true" },
+        { "command": "dev-code-memory.selectBlock", "when": "true" },
+        { "command": "dev-code-memory.gotoMatching", "when": "true" }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "npm run compile-tests && node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.103.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "eslint": "^9.34.0",
+    "typescript": "^5.9.2",
+    "ts-loader": "^9.5.4",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}

@@ -1,0 +1,25 @@
+# Ignora el código fuente y tests
+src/**
+out/test/**
+src/test/**
+.vscode-test/**
+
+# Ignora dependencias grandes (el runtime se queda con lo necesario)
+node_modules/**
+
+# Ignora configs y archivos de desarrollo
+.github/**
+webpack.config.js
+tsconfig.json
+jest.config.js
+*.map
+
+# Ignora datos locales
+snippets.json
+toImport.json
+
+# deja solo la build final
+!out/extension.js
+!package.json
+!README.md
+!LICENSE

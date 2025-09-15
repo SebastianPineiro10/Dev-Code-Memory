@@ -1,0 +1,13 @@
+# dependencias
+node_modules/
+
+# compilados
+out/
+dist/
+
+# temporales
+*.log
+*.tmp
+
+# pruebas pesadas de VSCode
+.vscode-test/
