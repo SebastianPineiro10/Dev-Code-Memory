@@ -1,13 +1,20 @@
-# dependencias
+# Dependencias
 node_modules/
 
-# compilados
+# Compilados y builds
 out/
 dist/
 
-# temporales
+# Archivos temporales
 *.log
 *.tmp
+*.DS_Store
 
-# pruebas pesadas de VSCode
+# VS Code test runners pesados
 .vscode-test/
+
+# Paquetes generados (nunca subirlos al repo)
+*.vsix
+
+# Archivos del sistema
+Thumbs.db
