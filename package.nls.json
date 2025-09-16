@@ -1,0 +1,14 @@
+{
+  "displayName": "Dev Code Memory",
+  "description": "Snippet collection with multi-language, export/import, find/replace, block selection, and matching-jump.",
+  "ext.category": "Dev Code Memory",
+  "cmd.saveSnippet.title": "Save Snippet",
+  "cmd.insertSnippet.title": "Insert Snippet",
+  "cmd.export.title": "Export Collection (JSON)",
+  "cmd.import.title": "Import Collection (JSON)",
+  "cmd.highlight.title": "Highlight Matches",
+  "cmd.replace.title": "Replace Matches",
+  "cmd.selectBlock.title": "Select Block / Tag",
+  "cmd.gotoMatch.title": "Go to Matching",
+  "cmd.delete.title": "Delete Snippet"
+}

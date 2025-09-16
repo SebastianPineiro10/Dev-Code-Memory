@@ -17,4 +17,8 @@ dist/
 *.vsix
 
 # Archivos del sistema
-Thumbs.db
+Thumbs.db*.vsix
+dist/
+out/
+node_modules/
+.DS_Store

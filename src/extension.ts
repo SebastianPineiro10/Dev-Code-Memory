@@ -24,8 +24,8 @@ function log(...args: any[]) {
 // -----------------------------
 // 1) ARCHIVO LOCAL (E/S ROBUSTA)
 // -----------------------------
-const SNIPPETS_FILE = path.join(__dirname, "..", "snippets.json");
-const TMP_FILE = SNIPPETS_FILE + ".tmp";
+let SNIPPETS_FILE: string;
+let TMP_FILE: string;
 
 // Mutex simple para evitar condiciones de carrera
 let ioLock: Promise<void> = Promise.resolve();
@@ -275,6 +275,55 @@ async function cmdInsertSnippet() {
   vscode.window.setStatusBarMessage(`Fragmento insertado: ${selected.label}`, 3000);
 }
 
+// --- Eliminar fragmento (lista + Enter = borrar) ---
+async function cmdDeleteSnippet() {
+  const editor = vscode.window.activeTextEditor;
+  const all = await loadSnippets();
+  if (all.length === 0) {
+    vscode.window.showInformationMessage("No tienes fragmentos guardados.");
+    return;
+  }
+
+  const lang = editor?.document ? await resolveLanguageId(editor.document) : undefined;
+  const filtered = lang ? all.filter(s => s.language === lang) : [];
+  const source = filtered.length > 0 ? filtered : all;
+
+  const items = source.map(s => ({
+    label: s.name,
+    description: `${s.language} | ${s.category} • ${new Date(s.createdAt).toLocaleString()}`,
+    snippet: s
+  }));
+
+  const picked = await vscode.window.showQuickPick(items, {
+    placeHolder: filtered.length > 0
+      ? `Elige el fragmento a eliminar (${lang})`
+      : "Elige el fragmento a eliminar",
+    matchOnDescription: true
+  });
+
+  if (!picked) {
+      vscode.window.setStatusBarMessage("Eliminación cancelada.", 3000);
+      return;
+  }
+
+  // ✅ CAMBIO: Se añade un paso de confirmación explícito
+  const confirmation = await vscode.window.showInformationMessage(
+      `¿Estás seguro de que quieres eliminar "${picked.label}"?`,
+      { modal: true },
+      "Sí, eliminar",
+      "No, cancelar"
+  );
+
+  if (confirmation !== "Sí, eliminar") {
+      vscode.window.setStatusBarMessage("Eliminación cancelada.", 3000);
+      return;
+  }
+  
+  const remaining = all.filter(s => s.id !== picked.snippet.id);
+  await saveSnippets(remaining);
+  vscode.window.showInformationMessage(`Fragmento eliminado: ${picked.label}`);
+}
+
 async function cmdExportSnippets() {
   const snippets = await loadSnippets();
   const uri = await vscode.window.showSaveDialog({
@@ -490,7 +539,6 @@ async function cmdReplaceMatches() {
   const oldTag = isTagName ? tagNameMatch![1] : selection;
   const ranges = isTagName
     ? collectTagNameRanges(text0, oldTag)
-    // ✅ CAMBIO CORRECTO: Ahora también se expande el rango si se eligió "palabra completa"
     : collectPlainRanges(text0, selection, wholeWord, caseInsensitive, wholeWord);
 
   if (ranges.length === 0) {
@@ -777,6 +825,12 @@ async function cmdGotoMatching() {
 // 7) ACTIVACIÓN
 // -----------------------------
 export function activate(context: vscode.ExtensionContext) {
+  // ✅ CAMBIO CLAVE: Usar la ubicación de almacenamiento global
+  // Esto asegura que la extensión siempre tenga permisos para guardar
+  // su archivo de configuración.
+  SNIPPETS_FILE = path.join(context.globalStorageUri.fsPath, "snippets.json");
+  TMP_FILE = SNIPPETS_FILE + ".tmp";
+  
   log("Dev Code Memory activada v4");
   context.subscriptions.push(
     vscode.commands.registerCommand("dev-code-memory.addSnippet", cmdAddSnippet),
@@ -786,7 +840,8 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand("dev-code-memory.highlightMatches", cmdHighlightMatches),
     vscode.commands.registerCommand("dev-code-memory.replaceMatches", cmdReplaceMatches),
     vscode.commands.registerCommand("dev-code-memory.selectBlock", cmdSelectBlock),
-    vscode.commands.registerCommand("dev-code-memory.gotoMatching", cmdGotoMatching)
+    vscode.commands.registerCommand("dev-code-memory.gotoMatching", cmdGotoMatching),
+    vscode.commands.registerCommand("dev-code-memory.deleteSnippet", cmdDeleteSnippet)
   );
 }
 

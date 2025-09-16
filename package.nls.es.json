@@ -1,0 +1,14 @@
+{
+  "displayName": "Dev Code Memory",
+  "description": "Colección de fragmentos multi-lenguaje con exportación/importación, búsqueda/reemplazo, selección de bloques y salto a pareja.",
+  "ext.category": "Dev Code Memory",
+  "cmd.saveSnippet.title": "Guardar fragmento",
+  "cmd.insertSnippet.title": "Insertar fragmento",
+  "cmd.export.title": "Exportar colección (JSON)",
+  "cmd.import.title": "Importar colección (JSON)",
+  "cmd.highlight.title": "Resaltar coincidencias",
+  "cmd.replace.title": "Reemplazar coincidencias",
+  "cmd.selectBlock.title": "Seleccionar bloque / etiqueta",
+  "cmd.gotoMatch.title": "Ir a pareja",
+  "cmd.delete.title": "Eliminar fragmento"
+}

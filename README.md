@@ -1,65 +1,182 @@
 # Dev Code Memory
 
-ES
-Guarda, organiza e inserta fragmentos de código en múltiples lenguajes 🚀
+ES · Guarda, organiza e inserta fragmentos de código en múltiples lenguajes.
+EN · Save, organize, and insert code snippets in multiple languages.
 
-EN
-Save, organize, and insert code snippets in multiple languages 🚀
-
-![Demo](media/dev-code-memory.gif)
+Build: Enterprise Refactor — v4 (Bulletproof)
 
 ## Author
 
 **Sebastian Piñeiro Madero**  
 [Portfolio](https://sebastian-codes.vercel.app/) • [GitHub](https://github.com/SebastianPineiro10)
 
+
+![Demo](media/dev-code-memory.gif)
+
+
+
+## Cheat Sheet (Acción → Teclado / Paleta)
+
+Acción (ES / EN)	Win/Linux	macOS	Paleta / Command Palette
+Guardar fragmento / Save snippet	Ctrl+Alt+D	Cmd+Alt+D	Dev Code Memory: Save Snippet
+Insertar fragmento / Insert snippet	Ctrl+Alt+P	Cmd+Alt+P	Dev Code Memory: Insert Snippet
+Eliminar fragmento / Delete snippet	Ctrl+Alt+K	Cmd+Alt+Backspace	Dev Code Memory: Delete Snippet
+Resaltar coincidencias / Highlight matches	Ctrl+Alt+H	Cmd+Alt+H	Dev Code Memory: Highlight Matches
+Reemplazar coincidencias / Replace matches	Ctrl+Alt+R	Cmd+Alt+R	Dev Code Memory: Replace Matches
+Seleccionar bloque/etiqueta / Select block/tag	Ctrl+Alt+B	Cmd+Alt+B	Dev Code Memory: Select Block/Tag
+Ir a la pareja / Goto matching	Ctrl+Alt+M	Cmd+Alt+M	Dev Code Memory: Goto Matching
+Exportar colección (JSON) / Export collection (JSON)	Ctrl+Alt+E	Cmd+Alt+E	Dev Code Memory: Export Collection (JSON)
+Importar colección (JSON) / Import collection (JSON)	Ctrl+Alt+I	Cmd+Alt+I	Dev Code Memory: Import Collection (JSON)
+
+Abre la Paleta con Ctrl+Shift+P (Win/Linux) o Cmd+Shift+P (macOS).
+
+
+
+## Tabla de Contenido / Table of Contents
+	•	Autor / Author
+	•	Overview / Descripción
+	•	Características / Features
+	•	Instalación / Installation
+	•	Uso / Usage
+	•	Importar / Exportar (Teclado & Paleta)
+	•	Comandos (IDs y títulos)
+	•	Atajos de Teclado / Keyboard Shortcuts
+	•	Ejemplo de Snippet / Example
+	•	Forma del JSON exportado / Exported JSON shape
+	•	Requisitos / Requirements
+	•	Privacidad y Datos / Privacy & Data
+	•	Problemas Conocidos / Known Issues
+	•	Hoja de Ruta / Roadmap
+	•	Notas de Versión / Release Notes
+	•	Licencia / License
+
+
+
+## Autor / Author
+
+Sebastian Piñeiro Madero
+GitHub
+
+
+
 ## Overview / Descripción
 
 EN
-Dev Code Memory is a Visual Studio Code extension that allows you to save, organize, and insert code snippets automatically.
-Snippets are stored in a collection-like JSON structure (Mongo-style) with fields (id, name, category, language, content, createdAt), ensuring robustness and compatibility with any language detected by VS Code.
-It also provides advanced search, replace, and navigation tools that VS Code does not natively cover.
+Dev Code Memory is a VS Code extension to save, organize, and quickly insert code snippets. It keeps your snippets in a Mongo-like JSON collection with fields (id, name, category, language, content, createdAt). The extension also includes 4 highlight modes, robust replace (text or HTML tag names), block/tag selection, goto matching, and a Delete Snippet command with confirmation.
 
 ES
-Dev Code Memory es una extensión para Visual Studio Code que te permite guardar, organizar e insertar fragmentos de código automáticamente.
-Los fragmentos se almacenan en una estructura tipo colección (Mongo-like) en JSON, con campos (id, name, category, language, content, createdAt), lo que garantiza robustez y compatibilidad con cualquier lenguaje detectado por VS Code.
-Además, ofrece herramientas avanzadas de búsqueda, reemplazo y navegación que VS Code no cubre de forma nativa.
+Dev Code Memory es una extensión de VS Code para guardar, organizar e insertar fragmentos de código. Conserva tus fragmentos en una colección JSON estilo Mongo con campos (id, name, category, language, content, createdAt). Además, incluye 4 modos de resaltado, reemplazo robusto (texto o nombres de etiquetas HTML), selección de bloques/etiquetas, salto a la pareja y comando para Eliminar fragmento con confirmación.
 
 
-## Features / Características
+
+## Características / Features
+
+ES
+	•	E/S local robusta: snippets.json con bloqueo de concurrencia (mutex) y respaldo .tmp.
+	•	Almacenamiento seguro: ahora se guarda en la carpeta de almacenamiento global de VS Code (globalStorage), evitando problemas de permisos.
+	•	Guardado inteligente: sugiere nombre por contenido (primer tag HTML o function foo()).
+	•	Detección de lenguaje: si el doc es plaintext, solicita languageId.
+	•	Protección de sobrescritura: confirma si ya existe (name + language).
+	•	Inserción filtrada por lenguaje: muestra primero los del lenguaje actual.
+	•	Exportar/Importar (JSON): exporta arreglo de documentos; importa normalizando y fusionando por id (o language::name).
+	•	Resaltado (4 modos): exacto/entero, parcial, palabra completa insensible, exacto insensible.
+	•	Reemplazo robusto: por texto (palabra completa / case-insensitive) o por etiqueta HTML/XML (apertura/cierre).
+	•	Bloques & etiquetas: Select Block y Goto Matching para {}, [], (), y <tag>…</tag>.
+	•	Eliminar fragmento: nuevo comando con confirmación explícita.
 
 EN
-	•	Automatic Snippet Capture: Save selected code directly from the editor.
-	•	Mongo-like Data Model: Each snippet is stored as a structured document with UUID and metadata.
-	•	Robust Local Storage: File I/O with concurrency lock and safe writes (.tmp fallback).
-	•	Overwrite Protection: Confirms before replacing existing snippets.
-	•	Quick Insertion: Insert snippets in just two steps, filtered by language.
-	•	Import/Export: Backup and restore your snippet collections.
-	•	Highlight Matches: Find and highlight multiple occurrences with 4 precision modes.
-	•	Smart Replace: Replace all or review one by one (supports plain text and HTML/XML tags).
-	•	Block/Tag Navigation: Jump to matching {}, [], (), or paired HTML tags.
-	•	Keyboard Shortcuts:
-	•	Add snippet → Ctrl+Alt+D (Win/Linux) / Cmd+Alt+D (macOS)
-	•	Insert snippet → Ctrl+Alt+P (Win/Linux) / Cmd+Alt+P (macOS)
+	•	Robust local I/O: snippets.json with concurrency lock and .tmp fallback.
+	•	Safe storage: now uses VS Code global storage (globalStorage) to avoid permission issues.
+	•	Smart save (auto name suggestion from content).
+	•	Language detection (prompts languageId if plaintext).
+	•	Overwrite protection for (name + language).
+	•	Language-aware insertion (current language first).
+	•	Export/Import (JSON) with normalization and merge by id (fallback language::name).
+	•	Highlight (4 modes), robust replace (text or HTML tag), Select Block, Goto Matching.
+	•	Delete snippet command with confirmation.
+
+
+
+## Instalación / Installation
+
+Desde Marketplace / From Marketplace
+	1.	Abre Visual Studio Code → Extensiones (Ctrl+Shift+X).
+	2.	Busca Dev Code Memory.
+	3.	Instala y recarga VS Code.
+
+Desde VSIX (local) / From VSIX
+	1.	npx vsce package → genera dev-code-memory-<version>.vsix.
+	2.	VS Code → “Install from VSIX…” y selecciona el archivo.
+
+
+
+## Uso / Usage
 
 ES
-	•	Captura Automática de Fragmentos: Guarda directamente el código seleccionado en el editor.
-	•	Modelo de Datos Mongo-like: Cada fragmento se guarda como documento estructurado con UUID y metadatos.
-	•	Almacenamiento Local Robusto: Escritura de archivos con lock de concurrencia y fallback seguro (.tmp).
-	•	Protección contra Sobrescritura: Confirma antes de reemplazar fragmentos existentes.
-	•	Inserción Rápida: Inserta fragmentos en solo dos pasos, filtrados por lenguaje.
-	•	Importar/Exportar: Respaldar y restaurar colecciones de fragmentos.
-	•	Resaltado de Coincidencias: Encuentra y resalta múltiples ocurrencias con 4 modos de precisión.
-	•	Reemplazo Inteligente: Reemplaza todo o revisa uno por uno (compatible con texto y etiquetas HTML/XML).
-	•	Navegación de Bloques/Etiquetas: Salta entre pares {}, [], () o etiquetas HTML emparejadas.
-	•	Atajos de Teclado:
-	•	Agregar fragmento → Ctrl+Alt+D (Win/Linux) / Cmd+Alt+D (macOS).
-	•	Insertar fragmento → Ctrl+Alt+P (Win/Linux) / Cmd+Alt+P (macOS).
+	•	Guardar fragmento: selecciona código → Ctrl+Alt+D (Cmd+Alt+D) → nómbralo → elige categoría.
+	•	Insertar fragmento: Ctrl+Alt+P / Cmd+Alt+P → lista filtrada por lenguaje actual (o todos).
+	•	Eliminar fragmento: Ctrl+Alt+K / Cmd+Alt+Backspace → selecciona y confirma.
+	•	Resaltar coincidencias (4 modos): selecciona texto → Highlight Matches → elige modo.
+	•	Reemplazar coincidencias: selecciona texto o nombre de etiqueta → Replace Matches → Todo o Uno por uno.
+	•	Seleccionar bloque/etiqueta: cursor en {}, [], (), o <tag>…</tag> → Select Block.
+	•	Ir a la pareja: cursor sobre/antes de bracket o etiqueta → Goto Matching.
+
+EN
+	•	Save snippet: select code → Ctrl+Alt+D (Cmd+Alt+D) → name it → choose category.
+	•	Insert snippet: Ctrl+Alt+P / Cmd+Alt+P → list filtered by current language (or all).
+	•	Delete snippet: Ctrl+Alt+K / Cmd+Alt+Backspace → pick snippet and confirm.
+	•	Highlight matches (4 modes), Replace matches, Select Block, Goto Matching as above.
 
 
-## Example Snippet / Ejemplo de Fragmento
 
-```json
+## Importar / Exportar (Teclado & Paleta) · Import / Export (Keyboard & Palette)
+
+Paleta / Palette
+	•	Export (JSON): Ctrl+Shift+P → “Export Collection (JSON)” → elige destino .json.
+	•	Import (JSON): Ctrl+Shift+P → “Import Collection (JSON)” → elige archivo .json.
+
+Atajos / Shortcuts (sugeridos / suggested)
+	•	Exportar / Export: Ctrl+Alt+E (Win/Linux) · Cmd+Alt+E (macOS)
+	•	Importar / Import: Ctrl+Alt+I (Win/Linux) · Cmd+Alt+I (macOS)
+
+El archivo exportado es un arreglo de documentos { id, name, category, language, content, createdAt }.
+En importación se normaliza y se fusiona por id (o language::name si falta id).
+
+
+
+## Comandos (IDs y títulos) / Commands
+
+ID	Título (EN)	Título (ES)
+dev-code-memory.addSnippet	Dev Code Memory: Save Snippet	Dev Code Memory: Guardar Fragmento
+dev-code-memory.insertSnippet	Dev Code Memory: Insert Snippet	Dev Code Memory: Insertar Fragmento
+dev-code-memory.deleteSnippet	Dev Code Memory: Delete Snippet	Dev Code Memory: Eliminar Fragmento
+dev-code-memory.exportSnippets	Dev Code Memory: Export Collection (JSON)	Dev Code Memory: Exportar Colección (JSON)
+dev-code-memory.importSnippets	Dev Code Memory: Import Collection (JSON)	Dev Code Memory: Importar Colección (JSON)
+dev-code-memory.highlightMatches	Dev Code Memory: Highlight Matches	Dev Code Memory: Resaltar Coincidencias
+dev-code-memory.replaceMatches	Dev Code Memory: Replace Matches	Dev Code Memory: Reemplazar Coincidencias
+dev-code-memory.selectBlock	Dev Code Memory: Select Block/Tag	Dev Code Memory: Seleccionar Bloque/Etiqueta
+dev-code-memory.gotoMatching	Dev Code Memory: Goto Matching	Dev Code Memory: Ir a la Pareja
+
+
+
+
+## Atajos de Teclado / Keyboard Shortcuts
+	•	Guardar / Save: Ctrl+Alt+D · Cmd+Alt+D
+	•	Insertar / Insert: Ctrl+Alt+P · Cmd+Alt+P
+	•	Eliminar / Delete: Ctrl+Alt+K · Cmd+Alt+Backspace
+	•	Resaltar / Highlight: Ctrl+Alt+H · Cmd+Alt+H
+	•	Reemplazar / Replace: Ctrl+Alt+R · Cmd+Alt+R
+	•	Select Block/Tag: Ctrl+Alt+B · Cmd+Alt+B
+	•	Goto Matching: Ctrl+Alt+M · Cmd+Alt+M
+	•	Export: Ctrl+Alt+E · Cmd+Alt+E
+	•	Import: Ctrl+Alt+I · Cmd+Alt+I
+
+Si algún atajo entra en conflicto, cámbialo en Preferences → Keyboard Shortcuts.
+
+
+
+## Ejemplo de Snippet / Example
+
 {
   "id": "a1b2c3d4",
   "name": "HelloWorldJS",
@@ -68,115 +185,82 @@ ES
   "content": "console.log('Hello, world!');",
   "createdAt": "2025-09-15T12:34:56.789Z"
 }
-```
 
-## Installation / Instalación
+Forma del JSON exportado / Exported JSON shape
 
-EN
-	1.	Open Visual Studio Code.
-	2.	Go to Extensions (Ctrl+Shift+X).
-	3.	Search for Dev Code Memory.
-	4.	Install and reload VS Code.
-
-ES
-	1.	Abre Visual Studio Code.
-	2.	Ve a Extensiones (Ctrl+Shift+X).
-	3.	Busca Dev Code Memory.
-	4.	Instálala y recarga VS Code.
+[
+  {
+    "id": "a1b2c3d4",
+    "name": "HelloWorldJS",
+    "category": "JavaScript",
+    "language": "javascript",
+    "content": "console.log('Hello, world!');",
+    "createdAt": "2025-09-15T12:34:56.789Z"
+  }
+]
 
 
 
-## Usage / Uso
 
-EN
-	•	Save a snippet: Select the code and press Ctrl+Alt+D (or Cmd+Alt+D). Enter a name when prompted.
-	•	Insert a snippet: Use Ctrl+Alt+P (or Cmd+Alt+P), select from the list, and the code will be inserted.
-	•	Highlight matches: Select text → Run Dev Code Memory: Highlight Matches → choose search mode.
-	•	Replace matches: Select text or a tag → Run Dev Code Memory: Replace Matches → choose “All” or “One by one”.
-	•	Select block/tag: Place cursor inside {} or <tag> → Run Dev Code Memory: Select Block.
-	•	Goto matching: Place cursor inside {} or <tag> → Run Dev Code Memory: Goto Matching.
+## Requisitos / Requirements
+
+VS Code 1.103.0 o superior / or higher.
+
+
+
+## Privacidad y Datos / Privacy & Data
 
 ES
-	•	Guardar un fragmento: Selecciona el código y presiona Ctrl+Alt+D (o Cmd+Alt+D). Escribe un nombre cuando se te pida.
-	•	Insertar un fragmento: Usa Ctrl+Alt+P (o Cmd+Alt+P), elige de la lista, y el código será insertado.
-	•	Resaltar coincidencias: Selecciona texto → Ejecuta Dev Code Memory: Highlight Matches → elige el modo de búsqueda.
-	•	Reemplazar coincidencias: Selecciona texto o etiqueta → Ejecuta Dev Code Memory: Replace Matches → elige “Todo” o “Uno por uno”.
-	•	Seleccionar bloque/etiqueta: Pon el cursor dentro de {} o <tag> → Ejecuta Dev Code Memory: Select Block.
-	•	Ir a la pareja: Pon el cursor dentro de {} o <tag> → Ejecuta Dev Code Memory: Goto Matching.
-
-	
-
-### Extra Keyboard Shortcuts
+Los fragmentos se guardan localmente en snippets.json dentro de la carpeta de almacenamiento global de VS Code (scope del usuario). La extensión no envía tus datos a servidores externos.
 
 EN
-- Highlight matches → Ctrl+Alt+H (Win/Linux) / Cmd+Alt+H (macOS).
-- Replace matches → Ctrl+Alt+R (Win/Linux) / Cmd+Alt+R (macOS).
-- Select block → Ctrl+Alt+B (Win/Linux) / Cmd+Alt+B (macOS).
-- Goto matching → Ctrl+Alt+M (Win/Linux) / Cmd+Alt+M (macOS).
+Snippets are stored locally in snippets.json under VS Code global storage (user scope). The extension does not send your data to external servers.
+
+
+
+## Problemas Conocidos / Known Issues
 
 ES
-- Resaltar coincidencias → Ctrl+Alt+H (Win/Linux) / Cmd+Alt+H (macOS)
-- Reemplazar coincidencias → Ctrl+Alt+R (Win/Linux) / Cmd+Alt+R (macOS).
-- Seleccionar bloque → Ctrl+Alt+B (Win/Linux) / Cmd+Alt+B (macOS).
-- Ir a la pareja → Ctrl+Alt+M (Win/Linux) / Cmd+Alt+M (macOS).
-
-
-
-
-## Requirements / Requisitos
+	•	Sincronización en la nube: no disponible todavía.
+	•	Importación: JSON inválido o esquema inesperado se rechaza; duplicados se fusionan por id (o language::name).
+	•	Concurrencia: se usa .tmp como respaldo de escritura segura.
 
 EN
-	•	Visual Studio Code version 1.103.0 or higher.
-
-ES
-	•	Visual Studio Code versión 1.103.0 o superior.
-
-
-
-## Known Issues / Problemas Conocidos
-
-EN
-	•	Snippets are stored locally in snippets.json. Synchronization between machines is not yet available.
-
-ES
-	•	Los fragmentos se almacenan localmente en snippets.json. Aún no existe sincronización entre máquinas.
+	•	Cloud sync: not available yet.
+	•	Import: invalid JSON/unexpected schema is rejected; duplicates merge by id (or language::name).
+	•	Concurrency: .tmp safe-write fallback.
 
 
 
-## Roadmap / Hoja de Ruta
+## Hoja de Ruta / Roadmap
 
-EN (planned for v5)
-	•	Cloud synchronization.
-	•	Team sharing of snippets.
-	•	Advanced search with tags and multi-channel navigation.
-
-ES (planeado para v5)
-	•	Sincronización en la nube.
-	•	Compartir fragmentos con equipos.
-	•	Búsqueda avanzada con etiquetas y navegación multicanal.
+v5 (planeado / planned)
+	•	Sincronización en la nube / Cloud sync
+	•	Colecciones compartidas por equipo / Team sharing
+	•	Búsqueda avanzada por etiquetas / Advanced tag search & multi-channel navigation
 
 
 
-## Release Notes / Notas de Versión
+## Notas de Versión / Release Notes
 
 0.0.1
 	•	EN Initial release: save, organize, and insert snippets.
 	•	ES Versión inicial: guardar, organizar e insertar fragmentos.
 
-0.0.4 (Enterprise Refactor — Bulletproof)
-	•	EN Added highlight matches (4 modes), robust replace (tags + text), block/tag navigation, and file I/O with lock system.
-	•	ES Agregado resaltado de coincidencias (4 modos), reemplazo robusto (etiquetas + texto), navegación de bloques/etiquetas y sistema de archivo con bloqueo.
+0.0.4 — Enterprise Refactor (Bulletproof)
+	•	NEW: Delete Snippet con confirmación modal.
+	•	NEW: Almacenamiento en VS Code globalStorage para evitar permisos.
+	•	NEW: Salida de build a dist/extension.js (Webpack).
+	•	Highlight (4 modos), replace robusto (tags + texto), navegación de bloques/etiquetas.
+	•	E/S con lock + fallback .tmp.
 
 
-## License / Licencia
 
-EN
-Proprietary — All rights reserved.
-This extension and its source code are the intellectual property of Sebastian Piñeiro Madero (SerenoDevs).
-Unauthorized copying, modification, redistribution, or commercial use is strictly prohibited without prior written permission.
+## Licencia / License
 
 ES
-Propietaria — Todos los derechos reservados.
-Esta extensión y su código fuente son propiedad intelectual de Sebastian Piñeiro Madero (SerenoDevs).
-La copia, modificación, redistribución o uso comercial no autorizado están estrictamente prohibidos sin permiso previo por escrito.
+PROPIETARIA — TODOS LOS DERECHOS RESERVADOS. Esta extensión y su código fuente son propiedad intelectual de Sebastian Piñeiro Madero (SerenoDevs). Prohibida la copia, modificación, redistribución o uso comercial sin permiso previo por escrito.
+
+EN
+PROPRIETARY — ALL RIGHTS RESERVED. This extension and its source code are the intellectual property of Sebastian Piñeiro Madero (SerenoDevs). Unauthorized copying, modification, redistribution, or commercial use is strictly prohibited without prior written permission.
 
